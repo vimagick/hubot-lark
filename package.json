@@ -1,0 +1,28 @@
+{
+  "name": "hubot-lark",
+  "version": "0.1.0",
+  "description": "hubot lark adapter",
+  "main": "src/lark.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael He",
+  "license": "ISC",
+  "dependencies": {
+    "parent-require": "^1.0.0"
+  },
+  "peerDependencies": {
+    "hubot": "^3.3.2"
+  },
+  "devDependencies": {
+    "coffee-script": ">=1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hlxwell/hubot-lark.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hlxwell/hubot-lark/issues"
+  },
+  "homepage": "https://github.com/hlxwell/hubot-lark#readme"
+}
