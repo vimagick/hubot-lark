@@ -1,3 +1,9 @@
+try
+  { Robot, Adapter, TextMessage, User } = require 'hubot'
+catch
+  prequire = require('parent-require')
+  { Robot, Adapter, TextMessage, User } = prequire 'hubot'
+
 class Lark extends Adapter
   constructor: ->
     super
