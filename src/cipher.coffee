@@ -22,3 +22,5 @@ class Cipher
     decipher = crypto.createDecipheriv('aes-256-cbc', @key, iv)
     decrypted = decipher.update(msg)
     return decrypted.toString() + decipher.final()
+
+module.exports = Cipher
