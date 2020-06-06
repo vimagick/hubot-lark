@@ -1,38 +1,27 @@
-express = require('express')
-bodyParser = require('body-parser')
-Cipher = require('./cipher')
-
 try
   { TextMessage, User } = require 'hubot'
 catch
   prequire = require('parent-require')
   { TextMessage, User } = prequire 'hubot'
-
-
-ENCRYPT_KEY = 'NXSm0yFlQQoKH3OQ7JYzzf7KHxe5JQOl'
+express = require('express')
+bodyParser = require('body-parser')
+Cipher = require('./cipher')
 
 class WebhookService
-  constructor: (@robot) ->
+  constructor: (@robot, @encrypt_key) ->
     @app = express()
     @app.use bodyParser.json({ type: 'application/json' })
     @app.get '/', (req, res) =>
       res.send {ok: true}
 
     @app.post '/lark-integration', (req, res) =>
-      # user = new User 1001, name: 'Lark User'
-      # message = new TextMessage user, 'run ls on localhost', 'MSG-001'
-      # @robot.receive message
+      cipher = new Cipher(@encrypt_key)
+      msg = JSON.parse cipher.decrypt(req.body.encrypt)
+      console.log msg
 
-      cipher = new Cipher(ENCRYPT_KEY)
-      message = cipher.decrypt req.body.encrypt
-      result = JSON.parse(message)
-
-      user = new User(result.event.user, name: result.event.user_open_id, room: result.event.open_chat_id)
-      message = new TextMessage(user, result.event.text_without_at_bot, result.uuid)
-      @robot.receive message
-
-      console.log result
-
+      user = new User(msg.event.user, name: msg.event.user_open_id, room: msg.event.open_chat_id)
+      textMsg = new TextMessage(user, msg.event.text_without_at_bot, msg.uuid)
+      @robot.receive textMsg
       res.send { ok: true }
 
   run: ->

@@ -1,9 +1,6 @@
 Cipher = require "./cipher"
 axios = require 'axios'
 
-axios.defaults.baseURL = 'https://open.feishu.cn/open-apis'
-axios.defaults.headers.post['Content-Type'] = 'application/json'
-
 class Message
   directSend: (payload) ->
     axios.post("message/v4/send", payload)
@@ -14,7 +11,12 @@ class Message
 
 class LarkClient
   constructor: (@appId, @appSecret) ->
-    @message = new Message(@)
+    # settings
+    axios.defaults.baseURL = 'https://open.feishu.cn/open-apis'
+    axios.defaults.headers.post['Content-Type'] = 'application/json'
+
+    # submodules
+    @message = new Message
 
   auth: ->
     axios.post("auth/v3/tenant_access_token/internal",{

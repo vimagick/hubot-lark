@@ -8,12 +8,12 @@ WebhookService = require "./webhook_service"
 LarkClient = require('./lark_client')
 
 class Lark extends Adapter
-  constructor: (@robot) ->
+  constructor: (@robot, @api_id, @api_key, @encrypt_key) ->
     super
-    @service = new WebhookService(@robot)
+    @service = new WebhookService(@robot, @encrypt_key)
     @service.run()
-    @lark = new LarkClient('cli_9e418cfa73ead00d', 'vTl6clSyfAVrZXaP3AlMfeJE1MILXkCu')
-    @lark.auth()
+    @lark = new LarkClient(@api_id, @api_key)
+    @lark.auth() # get access token when lark bot init.
 
   send: (envelope, strings...) ->
     @robot.logger.info "Sending message to lark ====================="
@@ -27,7 +27,7 @@ class Lark extends Adapter
     })
 
   reply: (envelope, strings...) ->
-    @robot.logger.info "Reply message ====================="
+    @robot.logger.info "Reply message ========================="
     @lark.message.directSend({
       chat_id: envelope.room,
       msg_type:"text",
@@ -41,4 +41,9 @@ class Lark extends Adapter
     @emit "connected"
 
 exports.use = (robot) ->
-  new Lark robot
+  # FIXME to pass secret from hubot
+  API_ID = 'cli_9e418cfa73ead00d'
+  API_SECRET = 'vTl6clSyfAVrZXaP3AlMfeJE1MILXkCu'
+  ENCRYPT_KEY = 'NXSm0yFlQQoKH3OQ7JYzzf7KHxe5JQOl'
+
+  new Lark robot, API_ID, API_SECRET, ENCRYPT_KEY
