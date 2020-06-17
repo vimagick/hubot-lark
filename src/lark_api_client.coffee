@@ -1,6 +1,8 @@
 Cipher = require "./cipher"
 axios = require 'axios'
 
+# TODO seems all the request is the same, like mostly just GET/POST with different PATH
+# LarkApiClient().message.directSend(payload)
 class Message
   directSend: (payload) ->
     axios.post("message/v4/send", payload)
@@ -9,7 +11,14 @@ class Message
       .catch (err) ->
         console.log err
 
-class LarkClient
+  batchSend: (payload) ->
+    axios.post("message/v4/batch_send", payload)
+      .then (resp) ->
+        console.log resp.data
+      .catch (err) ->
+        console.log err
+
+class LarkApiClient
   constructor: (@appId, @appSecret) ->
     # settings
     axios.defaults.baseURL = 'https://open.feishu.cn/open-apis'
@@ -28,4 +37,4 @@ class LarkClient
       .catch (err) ->
         console.log "Got some error during get tenant access token: #{err}"
 
-module.exports = LarkClient
+module.exports = LarkApiClient
