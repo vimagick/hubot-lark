@@ -17,8 +17,6 @@ class WebhookService
     @app.post '/lark-integration', (req, res) =>
       cipher = new Cipher(@encrypt_key)
       msg = JSON.parse cipher.decrypt(req.body.encrypt)
-      console.log msg
-
       user = new User(msg.event.user, name: msg.event.user_open_id, room: msg.event.open_chat_id)
       textMsg = new TextMessage(user, msg.event.text_without_at_bot, msg.uuid)
       @robot.receive textMsg

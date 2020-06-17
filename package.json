@@ -2,7 +2,7 @@
   "name": "hubot-lark",
   "version": "0.1.1",
   "description": "hubot lark adapter",
-  "main": "src/lark.coffee",
+  "main": "./lark.coffee",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
