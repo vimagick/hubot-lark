@@ -12,7 +12,7 @@ class LarkBot extends Adapter
     super
     @service = new WebhookService(@robot, @options.encrypt_key)
     @service.run()
-    @lark = new LarkApiClient(@options.api_id, @options.api_key)
+    @lark = new LarkApiClient(@options.api_id, @options.api_secret)
     @lark.auth() # get access token when lark bot init.
 
   send: (envelope, strings...) ->
