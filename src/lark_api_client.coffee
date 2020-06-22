@@ -1,6 +1,8 @@
 Cipher = require "./cipher"
 axios = require 'axios'
 
+TOKEN_ERROR_CODE = 99991661
+
 # TODO seems all the request is the same, like mostly just GET/POST with different PATH
 # LarkApiClient().message.directSend(payload)
 class Message
@@ -9,26 +11,47 @@ class Message
       .then (resp) ->
         console.log resp.data
       .catch (err) ->
-        console.log err
+        console.log "Got some error when directSend msg to lark"
+        console.log err.response.data
 
   batchSend: (payload) ->
     axios.post("message/v4/batch_send", payload)
       .then (resp) ->
         console.log resp.data
       .catch (err) ->
-        console.log err
+        console.log "Got some error when batchSend msg to lark"
+        console.log err.response.data
 
 class LarkApiClient
   constructor: (@appId, @appSecret) ->
     # settings
-    axios.defaults.baseURL = 'https://open.feishu.cn/open-apis'
-    axios.defaults.headers.post['Content-Type'] = 'application/json'
+    @configAxios()
 
     # submodules
     @message = new Message
 
+  configAxios: ->
+    axios.defaults.baseURL = 'https://open.feishu.cn/open-apis'
+    axios.defaults.headers.post['Content-Type'] = 'application/json'
+    # response interceptor
+    interceptor = axios.interceptors.response.use(
+      (response) =>
+        return response
+      (error) =>
+        if error.response.data.code == TOKEN_ERROR_CODE
+          axios.interceptors.response.eject interceptor
+
+          @auth()
+            .then (resp) ->
+              axios.request(error.config)
+            .catch (err) ->
+              console.log err
+        else
+          return Promise.reject(error)
+    )
+
   auth: ->
-    axios.post("auth/v3/tenant_access_token/internal",{
+    return axios.post("auth/v3/tenant_access_token/internal", {
       app_id: @appId,
       app_secret: @appSecret
     })
