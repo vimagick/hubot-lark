@@ -8,7 +8,7 @@ bodyParser = require('body-parser')
 Cipher = require('./cipher')
 
 class WebhookService
-  constructor: (@robot, @encrypt_key) ->
+  constructor: (@robot, @encrypt_key, @port) ->
     @app = express()
     @app.use bodyParser.json({ type: 'application/json' })
     @app.get '/', (req, res) =>
@@ -26,7 +26,7 @@ class WebhookService
         res.send { ok: true }
 
   run: ->
-    server = @app.listen 9090, () =>
+    server = @app.listen @port, () =>
       host = server.address().address
       port = server.address().port
       @robot.logger.info("webhook service is running on http://#{host}:#{port}")

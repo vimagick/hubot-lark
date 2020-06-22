@@ -10,7 +10,7 @@ LarkApiClient = require('./lark_api_client')
 class LarkBot extends Adapter
   constructor: (@robot, @options) ->
     super
-    @service = new WebhookService(@robot, @options.encrypt_key)
+    @service = new WebhookService(@robot, @options.encrypt_key, @options.port)
     @service.run()
     @lark = new LarkApiClient(@options.api_id, @options.api_secret)
     @lark.auth() # get access token when lark bot init.
