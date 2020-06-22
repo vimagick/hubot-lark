@@ -22,6 +22,7 @@ class WebhookService
       else
         user = new User(msg.event.user, name: msg.event.user_open_id, room: msg.event.open_chat_id)
         textMsg = new TextMessage(user, msg.event.text_without_at_bot, msg.uuid)
+        @robot.logger.info "Received a message #{textMsg} ========================="
         @robot.receive textMsg
         res.send { ok: true }
 
