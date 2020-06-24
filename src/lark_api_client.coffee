@@ -1,7 +1,7 @@
 Cipher = require "./cipher"
 axios = require 'axios'
 
-TOKEN_ERROR_CODES = [99991661, 99991663, 99991665]
+TOKEN_ERROR_CODES = ['99991661', '99991663', '99991665']
 
 # TODO seems all the request is the same, like mostly just GET/POST with different PATH
 # LarkApiClient().message.directSend(payload)
@@ -38,7 +38,7 @@ class LarkApiClient
       (response) =>
         return response
       (error) =>
-        if TOKEN_ERROR_CODES.includes error.response.data.code
+        if TOKEN_ERROR_CODES.includes String(error.response.data.code)
           axios.interceptors.response.eject interceptor
 
           @auth()
