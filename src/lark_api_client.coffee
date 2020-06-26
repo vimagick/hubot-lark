@@ -26,13 +26,15 @@ class LarkApiClient
   constructor: (@appId, @appSecret) ->
     # settings
     @configAxios()
+    @token = null
 
     # submodules
     @message = new Message
 
   configAxios: ->
     axios.defaults.baseURL = 'https://open.feishu.cn/open-apis'
-    axios.defaults.headers.post['Content-Type'] = 'application/json'
+    axios.defaults.headers.common['Content-Type'] = 'application/json'
+
     # response interceptor
     interceptor = axios.interceptors.response.use(
       (response) =>
@@ -40,23 +42,23 @@ class LarkApiClient
       (error) =>
         if TOKEN_ERROR_CODES.includes String(error.response.data.code)
           axios.interceptors.response.eject interceptor
-
           @auth()
             .then (resp) ->
+              error.config.headers["Authorization"] = "Bearer #{@token}"
               axios.request(error.config)
             .catch (err) ->
-              console.log err
+              Promise.reject(err)
         else
           return Promise.reject(error)
     )
 
   auth: ->
-    return axios.post("auth/v3/tenant_access_token/internal", {
+    axios.post("auth/v3/tenant_access_token/internal", {
       app_id: @appId,
       app_secret: @appSecret
     })
       .then (resp) ->
-        axios.defaults.headers.common['Authorization'] = "Bearer #{resp.data.tenant_access_token}"
+        @token = resp.data.tenant_access_token
       .catch (err) ->
         console.log "Got some error during get tenant access token: #{err}"
 
