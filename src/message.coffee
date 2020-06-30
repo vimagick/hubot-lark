@@ -46,22 +46,27 @@ class LarkMessage
     }
 
   _getBody: () ->
-    {
-      tag: "div",
-      text: {
-        tag: "plain_text",
-        content: @options.content
+    if @options.content?
+      {
+        tag: "div",
+        text: {
+          tag: "plain_text",
+          content: @options.content
+        }
       }
-    }
+
+  _getExtraBody: () ->
+    @options.extraBody
 
 class LarkCardMessage extends LarkMessage
   _getCardContent: () ->
     {
       card: {
-        elements: [
+        elements: _.compact([
           @_getBody(),
+          @_getExtraBody(),
           @_getButtons()
-        ]
+        ])
       }
     }
 
