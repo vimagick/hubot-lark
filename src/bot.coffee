@@ -45,7 +45,6 @@ class LarkBot extends Adapter
 
   reply: (envelope, strings...) ->
     @robot.logger.info "Reply message ========================="
-    console.log envelope
     @lark.messageDirectSend({
       chat_id: envelope.room,
       msg_type:"text",

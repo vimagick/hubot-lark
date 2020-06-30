@@ -2,8 +2,6 @@ Cipher = require "./cipher"
 axios = require 'axios'
 _ = require 'lodash'
 
-TOKEN_ERROR_CODES = ['99991661', '99991663', '99991665']
-
 # TODO seems all the request is the same, like mostly just GET/POST with different PATH
 # LarkApiClient().messageDirectSend(payload)
 class LarkApiClient
