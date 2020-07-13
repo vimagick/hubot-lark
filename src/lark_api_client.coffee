@@ -2,11 +2,14 @@ Cipher = require "./cipher"
 axios = require 'axios'
 _ = require 'lodash'
 
+TOKEN_ERROR_CODES = ['99991661', '99991663', '99991665']
+LARK_URL = process.env.LARK_URL || 'https://open.feishu.cn/open-apis'
+
 # TODO seems all the request is the same, like mostly just GET/POST with different PATH
 # LarkApiClient().messageDirectSend(payload)
 class LarkApiClient
   constructor: (@appId, @appSecret) ->
-    axios.defaults.baseURL = 'https://open.feishu.cn/open-apis'
+    axios.defaults.baseURL = LARK_URL
     axios.defaults.headers.common['Content-Type'] = 'application/json'
 
   auth: ->

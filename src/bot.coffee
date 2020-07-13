@@ -1,24 +1,22 @@
+
 try
   { Robot, Adapter, TextMessage, User } = require 'hubot'
-  { LarkCardMessage, LarkImageMessage } = require './message'
 catch
   prequire = require('parent-require')
   { Robot, Adapter, TextMessage, User } = prequire 'hubot'
-  { LarkCardMessage, LarkImageMessage } = prequire './message'
 
 _ = require "lodash"
-
-LarkApiClient = require('./lark_api_client')
+LarkApiClient = require './lark_api_client'
+WebhookService = require './webhook_service'
+{ LarkCardMessage, LarkImageMessage } = require './message'
 
 class LarkBot extends Adapter
   constructor: (@robot, @options) ->
     super
     @lark = new LarkApiClient(@options.api_id, @options.api_secret)
-    @lark.auth() # get access token when lark bot init.
 
   send: (envelope, strings...) ->
-    @robot.logger.info "Sending message to lark ====================="
-
+    @robot.logger.info "Lark bot sent message to Lark ..."
     _.each strings, (item) =>
       if item instanceof LarkCardMessage
         msg = _.merge(item.toJson(), {
@@ -44,17 +42,18 @@ class LarkBot extends Adapter
         }
 
   reply: (envelope, strings...) ->
-    @robot.logger.info "Reply message ========================="
+    @robot.logger.info "Lark bot replied message ..."
     @lark.messageDirectSend({
       chat_id: envelope.room,
-      msg_type:"text",
+      msg_type: "text",
       content: {
         text: strings.join("")
       }
     })
 
   run: ->
-    @robot.logger.info "Lark bot is running..."
+    @robot.logger.info "Lark bot is connected ..."
+    new WebhookService(@robot, @options)
     @emit "connected"
 
 module.exports = LarkBot
