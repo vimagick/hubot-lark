@@ -1,2 +1,4 @@
+/sample/node_modules
+/sample/env/lark.env
 /node_modules
 /.vscode
