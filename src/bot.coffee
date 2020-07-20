@@ -17,6 +17,13 @@ class LarkBot extends Adapter
 
   send: (envelope, strings...) ->
     @robot.logger.info "Lark bot sent message to Lark ..."
+    @_sendMessage(envelope, strings)
+
+  reply: (envelope, strings...) ->
+    @robot.logger.info "Lark bot replied message ..."
+    @_sendMessage(envelope, strings)
+
+  _sendMessage: (envelope, strings) ->
     _.each strings, (item) =>
       if item instanceof LarkCardMessage
         msg = _.merge(item.toJson(), {
@@ -40,16 +47,6 @@ class LarkBot extends Adapter
             text: item
           }
         }
-
-  reply: (envelope, strings...) ->
-    @robot.logger.info "Lark bot replied message ..."
-    @lark.messageDirectSend({
-      chat_id: envelope.room,
-      msg_type: "text",
-      content: {
-        text: strings.join("")
-      }
-    })
 
   run: ->
     @robot.logger.info "Lark bot is connected ..."
