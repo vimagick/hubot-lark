@@ -1,35 +1,35 @@
 {
-  "name": "hubot-lark",
-  "version": "0.2.3",
-  "description": "hubot lark adapter",
-  "main": "./lark.coffee",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Michael He",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.19.2",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "form-data": "^3.0.0",
-    "lodash": "^4.17.19",
-    "parent-require": "^1.0.0",
-    "qs": "^6.9.4",
-    "request": "^2.88.2"
-  },
-  "peerDependencies": {
-    "hubot": "^3.3.2"
-  },
-  "devDependencies": {
-    "coffee-script": ">=1.2.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hlxwell/hubot-lark.git"
-  },
-  "bugs": {
-    "url": "https://github.com/hlxwell/hubot-lark/issues"
-  },
-  "homepage": "https://github.com/hlxwell/hubot-lark#readme"
+    "name": "hubot-lark",
+    "version": "0.2.3",
+    "description": "hubot lark adapter",
+    "main": "./lark.coffee",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Michael He",
+    "license": "ISC",
+    "dependencies": {
+        "axios": ">=0.21.1",
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
+        "form-data": "^3.0.0",
+        "lodash": "^4.17.19",
+        "parent-require": "^1.0.0",
+        "qs": "^6.9.4",
+        "request": "^2.88.2"
+    },
+    "peerDependencies": {
+        "hubot": "^3.3.2"
+    },
+    "devDependencies": {
+        "coffee-script": ">=1.2.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hlxwell/hubot-lark.git"
+    },
+    "bugs": {
+        "url": "https://github.com/hlxwell/hubot-lark/issues"
+    },
+    "homepage": "https://github.com/hlxwell/hubot-lark#readme"
 }
