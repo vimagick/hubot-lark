@@ -35,14 +35,14 @@ class WebhookService
         return
 
       user = new User(
-        data.event.user,
-        name: data.event.user_open_id,
-        room: data.event.open_chat_id
+        data.event.sender.sender_id.open_id,
+        name: data.event.sender.sender_id.open_id,
+        room: data.event.message.chat_id
       )
       message = new TextMessage(
         user,
-        data.event.text_without_at_bot,
-        data.uuid
+        data.event.message.content,
+        data.event.message.message_id
       )
       @robot.receive message
       res.send { ok: true }
