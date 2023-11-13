@@ -34,17 +34,19 @@ class WebhookService
         res.send { challenge: data.challenge }
         return
 
-      user = new User(
-        data.event.sender.sender_id.open_id,
-        name: data.event.sender.sender_id.open_id,
-        room: data.event.message.chat_id
-      )
-      message = new TextMessage(
-        user,
-        data.event.message.content,
-        data.event.message.message_id
-      )
-      @robot.receive message
+      if data.header.event_type == 'im.message.receive_v1'
+        user = new User(
+          data.event.sender.sender_id.open_id,
+          name: data.event.sender.sender_id.open_id,
+          room: data.event.message.chat_id
+        )
+        message = new TextMessage(
+          user,
+          data.event.message.content,
+          data.event.message.message_id
+        )
+        @robot.receive message
+
       res.send { ok: true }
 
     @app.post '/lark-card-integration', (req, res) ->
