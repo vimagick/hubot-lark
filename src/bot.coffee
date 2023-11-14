@@ -12,7 +12,7 @@ WebhookService = require './webhook_service'
 
 class LarkBot extends Adapter
   constructor: (@robot, @options) ->
-    super()
+    super
     @lark = new LarkApiClient(@options.api_id, @options.api_secret)
 
   send: (envelope, strings...) ->
