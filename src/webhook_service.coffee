@@ -30,6 +30,8 @@ class WebhookService
       body = cipher.decrypt req.body.encrypt
       data = JSON.parse body
 
+      @robot.logger.debug JSON.stringify(data, null, 2)
+
       if data.challenge?
         res.send { challenge: data.challenge }
         return
