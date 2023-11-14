@@ -41,12 +41,13 @@ class WebhookService
           room: data.event.message.chat_id
         )
         content = JSON.parse data.event.message.content
-        message = new TextMessage(
-          user,
-          content.text,
-          data.event.message.message_id
-        )
-        @robot.receive message
+        if content.text?
+          message = new TextMessage(
+            user,
+            content.text,
+            data.event.message.message_id
+          )
+          @robot.receive message
 
       res.send { ok: true }
 
