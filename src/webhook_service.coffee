@@ -40,9 +40,10 @@ class WebhookService
           name: data.event.sender.sender_id.open_id,
           room: data.event.message.chat_id
         )
+        content = JSON.parse data.event.message.content
         message = new TextMessage(
           user,
-          data.event.message.content,
+          content.text,
           data.event.message.message_id
         )
         @robot.receive message
