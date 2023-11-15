@@ -112,6 +112,7 @@ class LarkImageMessage extends LarkMessage
   toString: () ->
     JSON.stringify _.merge @_getConfig(), @_getCardContent()
 
+exports.ReactionMessage = ReactionMessage
 exports.LarkTextMessage = LarkTextMessage
 exports.LarkImageMessage = LarkImageMessage
 exports.LarkCardMessage = LarkCardMessage
