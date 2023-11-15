@@ -57,12 +57,12 @@ class WebhookService
       res.send { ok: true }
 
     @app.post '/lark-card-integration', (req, res) ->
-      msg = req.body
+      data = req.body
 
       @robot.logger.debug JSON.stringify(data, null, 2)
       
-      if msg.challenge
-        res.send { challenge: msg.challenge }
+      if data.challenge
+        res.send { challenge: data.challenge }
         return
 
       res.send { ok: true }
