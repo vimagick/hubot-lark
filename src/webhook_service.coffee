@@ -7,6 +7,7 @@ catch
 express = require('express')
 bodyParser = require('body-parser')
 Cipher = require('./cipher')
+{ LarkTextMessage } = require('./message')
 
 class WebhookService
   constructor: (@robot, @config) ->
@@ -47,10 +48,10 @@ class WebhookService
         )
         content = JSON.parse data.event.message.content
         if content.text?
-          message = new TextMessage(
+          message = new LarkTextMessage(
             user,
             content.text,
-            data.event.message.message_id
+            data.event.message
           )
           @robot.receive message
 
