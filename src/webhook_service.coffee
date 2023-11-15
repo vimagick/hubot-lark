@@ -7,7 +7,7 @@ catch
 express = require('express')
 bodyParser = require('body-parser')
 Cipher = require('./cipher')
-{ LarkTextMessage } = require('./message')
+{ ReactionMessage, LarkTextMessage } = require('./message')
 
 class WebhookService
   constructor: (@robot, @config) ->
@@ -52,6 +52,22 @@ class WebhookService
             user,
             content.text,
             data.event.message
+          )
+          @robot.receive message
+
+      if data.header?.event_type in ['im.message.reaction.created_v1', 'im.message.reaction.deleted_v1']
+        user = new User(
+          data.event.user_id.open_id,
+          name: data.event.user_id.open_id,
+          room: null
+        )
+        if data.event.reaction_type.emoji_type?
+          type = if data.header.event_type == 'im.message.reaction.created_v1' then 'added' else 'removed'
+          reaction = data.event.reaction_type.emoji_type
+          message = new ReactionMessage(
+            type,
+            user,
+            reaction
           )
           @robot.receive message
 
