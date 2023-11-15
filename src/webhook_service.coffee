@@ -56,7 +56,7 @@ class WebhookService
 
       res.send { ok: true }
 
-    @app.post '/lark-card-integration', (req, res) ->
+    @app.post '/lark-card-integration', (req, res) =>
       data = req.body
 
       @robot.logger.debug JSON.stringify(data, null, 2)
