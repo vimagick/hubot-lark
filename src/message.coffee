@@ -7,10 +7,9 @@ catch
 _ = require "lodash"
 
 class ReactionMessage extends Message
-  constructor: (@user, @rawMessage) ->
-    super @user
+  constructor: (@type, @user, @reaction, @rawMessage) ->
     @parent_id = @rawMessage.message_id
-    @type = @rawMessage.reaction_type.emoji_type
+    super @user
 
 class LarkTextMessage extends TextMessage
   constructor: (@user, @text, @rawMessage) ->
