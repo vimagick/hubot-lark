@@ -67,7 +67,8 @@ class WebhookService
           message = new ReactionMessage(
             type,
             user,
-            reaction
+            reaction,
+            data.event
           )
           @robot.receive message
 
