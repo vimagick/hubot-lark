@@ -65,8 +65,8 @@ class WebhookService
           )
         else
           user = new User(
-            null,
-            name: null,
+            '',
+            name: '',
             room: null
           )
         if data.event.reaction_type.emoji_type?
