@@ -26,9 +26,12 @@ class WebhookService
       res.send { ok: true }
 
     @app.post '/lark-integration', (req, res) =>
-      cipher = new Cipher @config.encrypt_key
-      body = cipher.decrypt req.body.encrypt
-      data = JSON.parse body
+      if req.body.encrypt?
+        cipher = new Cipher @config.encrypt_key
+        body = cipher.decrypt req.body.encrypt
+        data = JSON.parse body
+      else
+        data = req.body
 
       @robot.logger.debug JSON.stringify(data, null, 2)
 
@@ -56,14 +59,12 @@ class WebhookService
     @app.post '/lark-card-integration', (req, res) ->
       msg = req.body
 
+      @robot.logger.debug JSON.stringify(data, null, 2)
+      
       if msg.challenge
         res.send { challenge: msg.challenge }
         return
 
-      # TODO
-      # if you want to handle card callbacks, you will implement a lot business logic, which is suppose not appear here.
-      # that's why I suggest you'd better to implement this port into your app by using:
-      # robot.router.post '/lark-card-integration', (req, res)
       res.send { ok: true }
 
     # start service after init.
