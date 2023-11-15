@@ -39,7 +39,7 @@ class WebhookService
         res.send { challenge: data.challenge }
         return
 
-      if data.header?.event_type? == 'im.message.receive_v1'
+      if data.header?.event_type == 'im.message.receive_v1'
         user = new User(
           data.event.sender.sender_id.open_id,
           name: data.event.sender.sender_id.open_id,
