@@ -27,6 +27,38 @@ class LarkApiClient
         console.log "Got some error during get tenant access token: "
         console.log err
 
+  reactionAdd: (mid, emoji) ->
+    @auth()
+      .then (token) ->
+        axios.post("im/v1/messages/#{mid}/reactions", { reaction_type: { emoji_type: emoji }}, {
+          headers: { Authorization: "Bearer #{token}" }
+        })
+        .then (resp) ->
+          if resp.data.code != 0
+            Promise.reject resp
+          else
+            console.log "reaction added success"
+            resp
+        .catch (err) ->
+          console.log "reaction added fail"
+          console.log err.data
+
+  reactionRemove: (mid, rid) ->
+    @auth()
+      .then (token) ->
+        axios.delete("im/v1/messages/#{mid}/reactions/#{rid}", {
+          headers: { Authorization: "Bearer #{token}" }
+        })
+        .then (resp) ->
+          if resp.data.code != 0
+            Promise.reject resp
+          else
+            console.log "reaction removed success"
+            resp
+        .catch (err) ->
+          console.log "reaction removed fail"
+          console.log err.data
+
   messageFetch: (mid) ->
     @auth()
       .then (token) ->
