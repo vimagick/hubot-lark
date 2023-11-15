@@ -1,10 +1,15 @@
 try
-  { User } = require 'hubot'
+  { User, Message, TextMessage } = require 'hubot'
 catch
   prequire = require('parent-require')
-  { User } = prequire 'hubot'
+  { User, Message, TextMessage } = prequire 'hubot'
 
 _ = require "lodash"
+
+class LarkTextMessage extends TextMessage
+  constructor: (@user, @text, @rawMessage) ->
+    @parent_id = @rawMessage.parent_id
+    super @user, @text, @rawMessage.message_id
 
 class LarkMessage
   constructor: (@options) ->
@@ -102,5 +107,6 @@ class LarkImageMessage extends LarkMessage
   toString: () ->
     JSON.stringify _.merge @_getConfig(), @_getCardContent()
 
+exports.LarkTextMessage = LarkTextMessage
 exports.LarkImageMessage = LarkImageMessage
 exports.LarkCardMessage = LarkCardMessage
