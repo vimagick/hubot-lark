@@ -63,6 +63,12 @@ class WebhookService
             name: data.event.user_id.open_id,
             room: null
           )
+        else
+          user = new User(
+            null,
+            name: null,
+            room: null
+          )
         if data.event.reaction_type.emoji_type?
           type = if data.header.event_type == 'im.message.reaction.created_v1' then 'added' else 'removed'
           reaction = data.event.reaction_type.emoji_type
