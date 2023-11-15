@@ -27,7 +27,22 @@ class LarkApiClient
         console.log "Got some error during get tenant access token: "
         console.log err
 
-  # ====================================================
+  messageFetch: (mid) ->
+    @auth()
+      .then (token) ->
+        axios.get("im/v1/messages/#{mid}", {
+          headers: { Authorization: "Bearer #{token}" }
+        })
+        .then (resp) ->
+          if resp.data.code != 0
+            Promise.reject resp
+          else
+            console.log "fetch success"
+            resp
+        .catch (err) ->
+          console.log "fetch fail"
+          console.log err.data
+
   messageDirectSend: (payload) ->
     @auth()
       .then (token) ->
