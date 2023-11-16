@@ -59,6 +59,22 @@ class LarkApiClient
           console.log "reaction removed fail"
           console.log err.data
 
+  reactionList: (mid) ->
+    @auth()
+      .then (token) ->
+        axios.get("im/v1/messages/#{mid}/reactions", {
+          headers: { Authorization: "Bearer #{token}" }
+        })
+        .then (resp) ->
+          if resp.data.code != 0
+            Promise.reject resp
+          else
+            console.log "reaction list success"
+            resp
+        .catch (err) ->
+          console.log "reaction list fail"
+          console.log err.data
+
   messageFetch: (mid) ->
     @auth()
       .then (token) ->
@@ -69,10 +85,10 @@ class LarkApiClient
           if resp.data.code != 0
             Promise.reject resp
           else
-            console.log "fetch success"
+            console.log "message fetch success"
             resp
         .catch (err) ->
-          console.log "fetch fail"
+          console.log "message fetch fail"
           console.log err.data
 
   messageDirectSend: (payload) ->
