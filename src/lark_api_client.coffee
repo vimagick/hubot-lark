@@ -91,6 +91,22 @@ class LarkApiClient
           console.log "message fetch fail"
           console.log err.data
 
+  messageReply: (mid, payload) ->
+    @auth()
+      .then (token) ->
+        axios.post("im/v1/messages/#{mid}/reply", payload, {
+          headers: { Authorization: "Bearer #{token}" }
+        })
+        .then (resp) ->
+          if resp.data.code != 0
+            Promise.reject resp
+          else
+            console.log "message reply success"
+            resp
+        .catch (err) ->
+          console.log "message reply fail"
+          console.log err.data
+
   messageDirectSend: (payload) ->
     @auth()
       .then (token) ->
