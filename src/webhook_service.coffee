@@ -48,9 +48,9 @@ class WebhookService
         )
         content = JSON.parse data.event.message.content
         if content.text?
-          text = content.text
-          for m in (data.event.message.mentions or [])
-            text = text.replace(m.key, "@#{m.name}")
+          text = (data.event.message.mentions or []).reduce (t, m) =>
+            t.replaceAll(m.key, "@#{m.name}")
+          , content.text
           message = new LarkTextMessage(
             user,
             text,
