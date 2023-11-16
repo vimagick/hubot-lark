@@ -41,7 +41,7 @@ class LarkBot extends Adapter
           chat_id: envelope.room,
           msg_type: "text",
           content: {
-            text: (if reply? then "<@#{envelope.user.id}>: #{item}" else item)
+            text: (if reply then "<@#{envelope.user.id}>: #{item}" else item)
           }
         }
       @lark.messageDirectSend msg
