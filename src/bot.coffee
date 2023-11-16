@@ -14,37 +14,37 @@ class LarkBot extends Adapter
     @lark = new LarkApiClient(@options.api_id, @options.api_secret)
 
   send: (envelope, strings...) ->
-    @robot.logger.info "Lark bot sent message to Lark ..."
-    @_sendMessage(envelope, strings)
+    @robot.logger.debug "Lark bot sent message to Lark ..."
+    @_sendMessage(envelope, strings, false)
 
   reply: (envelope, strings...) ->
-    @robot.logger.info "Lark bot replied message ..."
-    @_sendMessage(envelope, strings)
+    @robot.logger.debug "Lark bot replied message ..."
+    @_sendMessage(envelope, strings, true)
 
-  _sendMessage: (envelope, strings) ->
+  _sendMessage: (envelope, strings, reply) ->
     _.each strings, (item) =>
+      msg = null
       if item instanceof LarkCardMessage
         msg = _.merge(item.toJson(), {
           chat_id: envelope.room,
           msg_type: "interactive",
           update_multi: true
         })
-        @lark.messageDirectSend msg
       else if item instanceof LarkImageMessage
         msg = _.merge(item.toJson(), {
           chat_id: envelope.room,
           msg_type: "interactive",
           update_multi: true
         })
-        @lark.messageDirectSend msg
       else
-        @lark.messageDirectSend {
+        msg = {
           chat_id: envelope.room,
           msg_type: "text",
           content: {
-            text: item
+            text: (if reply? then "<@#{envelope.user.id}>: #{item}" else item)
           }
         }
+      @lark.messageDirectSend msg
 
   run: ->
     @robot.logger.info "Lark bot is connected ..."
