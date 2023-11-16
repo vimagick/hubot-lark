@@ -9,9 +9,12 @@ LarkApiClient = require './lark_api_client'
 { LarkCardMessage, LarkImageMessage } = require './message'
 
 class LarkBot extends Adapter
-  constructor: (@robot, @options) ->
+  constructor: (robot, options) ->
     super arguments...
-    @lark = new LarkApiClient(@options.api_id, @options.api_secret)
+    this.robot = robot
+    this.options = options
+    this.lark = new LarkApiClient(this.options.api_id, this.options.api_secret)
+    
 
   send: (envelope, strings...) ->
     @robot.logger.debug "Lark bot sent message to Lark ..."
