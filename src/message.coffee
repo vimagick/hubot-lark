@@ -8,13 +8,13 @@ _ = require "lodash"
 
 class ReactionMessage extends Message
   constructor: (@type, @user, @reaction, @rawMessage) ->
-    @parent_id = @rawMessage.message_id
     super @user
+    @parent_id = @rawMessage.message_id
 
 class LarkTextMessage extends TextMessage
   constructor: (@user, @text, @rawMessage) ->
-    @parent_id = @rawMessage.parent_id
     super @user, @text, @rawMessage.message_id
+    @parent_id = @rawMessage.parent_id
 
 class LarkMessage
   constructor: (@options) ->
