@@ -1,4 +1,3 @@
-
 try
   { Robot, Adapter, TextMessage, User } = require 'hubot'
 catch
@@ -7,7 +6,6 @@ catch
 
 _ = require "lodash"
 LarkApiClient = require './lark_api_client'
-WebhookService = require './webhook_service'
 { LarkCardMessage, LarkImageMessage } = require './message'
 
 class LarkBot extends Adapter
@@ -50,7 +48,6 @@ class LarkBot extends Adapter
 
   run: ->
     @robot.logger.info "Lark bot is connected ..."
-    new WebhookService(@robot, @options)
     @emit "connected"
 
 module.exports = LarkBot
