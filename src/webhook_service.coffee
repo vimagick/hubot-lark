@@ -50,7 +50,7 @@ class WebhookService
         if content.text?
           text = content.text
           for m in (data.event.message.mentions or [])
-            text = text.replace(m.key, "@{m.name}")
+            text = text.replace(m.key, "@#{m.name}")
           message = new LarkTextMessage(
             user,
             text,
