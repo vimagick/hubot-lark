@@ -132,10 +132,10 @@ class LarkApiClient
           if resp.data.code != 0
             Promise.reject resp
           else
-            console.log "image put success"
+            console.log "image upload success"
             resp
         .catch (err) ->
-          console.log "image put fail"
+          console.log "image upload fail"
           console.log err.data
 
 module.exports = LarkApiClient
