@@ -47,7 +47,7 @@ class LarkBot extends Adapter
             text: (if reply then "<at user_id=\"#{envelope.user.id}\">#{envelope.user.name}</at>: #{item}" else item)
           }
         }
-      @lark.messageDirectSend msg
+      @lark.messageSend msg
 
   run: ->
     @robot.logger.info "Lark bot is connected ..."

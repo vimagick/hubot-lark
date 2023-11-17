@@ -5,8 +5,6 @@ _ = require 'lodash'
 TOKEN_ERROR_CODES = ['99991661', '99991663', '99991665']
 LARK_URL = process.env.LARK_URL || 'https://open.feishu.cn/open-apis'
 
-# TODO seems all the request is the same, like mostly just GET/POST with different PATH
-# LarkApiClient().messageDirectSend(payload)
 class LarkApiClient
   constructor: (@appId, @appSecret) ->
     axios.defaults.baseURL = LARK_URL
@@ -107,10 +105,10 @@ class LarkApiClient
           console.log "message reply fail"
           console.log err.data
 
-  messageDirectSend: (payload) ->
+  messageSend: (payload) ->
     @auth()
       .then (token) ->
-        axios.post("message/v4/send", payload, {
+        axios.post("im/v1/messages", payload, {
           headers: { Authorization: "Bearer #{token}" }
         })
         .then (resp) ->
@@ -123,30 +121,11 @@ class LarkApiClient
           console.log "direct send fail"
           console.log err.data
 
-  messageBatchSend: (payload) ->
+  imageUpload: (payload) ->
     @auth()
       .then (token) ->
-        axios.post("message/v4/batch_send", payload, {
+        axios.postForm("im/v1/images", payload, {
           headers: { Authorization: "Bearer #{token}" }
-        })
-        .then (resp) ->
-          if resp.data.code != 0
-            Promise.reject resp
-          else
-            console.log "batch send success"
-            resp
-        .catch (err) ->
-          console.log "batch send fail"
-          console.log err.data
-
-  imagePut: (form) ->
-    @auth()
-      .then (token) ->
-        axios({
-          method: 'post',
-          url: 'image/v4/put',
-          headers: _.merge({ Authorization: "Bearer #{token}" }, form.getHeaders()),
-          data : form
         })
         .then (resp) ->
           if resp.data.code != 0
