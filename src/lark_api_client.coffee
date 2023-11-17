@@ -1,3 +1,7 @@
+#
+# Doc: https://open.larksuite.com/document/server-docs/im-v1/message/intro
+#
+
 Cipher = require "./cipher"
 axios = require 'axios'
 _ = require 'lodash'
