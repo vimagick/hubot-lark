@@ -109,6 +109,7 @@ class LarkApiClient
     @auth()
       .then (token) ->
         axios.post("im/v1/messages", payload, {
+          params: { receive_id_type: "chat_id" },
           headers: { Authorization: "Bearer #{token}" }
         })
         .then (resp) ->

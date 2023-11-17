@@ -26,27 +26,17 @@ class LarkBot extends Adapter
 
   _sendMessage: (envelope, strings, reply) ->
     _.each strings, (item) =>
-      msg = null
-      if item instanceof LarkCardMessage
-        msg = _.merge(item.toJson(), {
-          chat_id: envelope.room,
-          msg_type: "interactive",
-          update_multi: true
-        })
-      else if item instanceof LarkImageMessage
-        msg = _.merge(item.toJson(), {
-          chat_id: envelope.room,
-          msg_type: "interactive",
-          update_multi: true
-        })
-      else
-        msg = {
-          chat_id: envelope.room,
-          msg_type: "text",
-          content: {
-            text: (if reply then "<at user_id=\"#{envelope.user.id}\">#{envelope.user.name}</at>: #{item}" else item)
-          }
-        }
+      msg =
+        receive_id: envelope.room
+        msg_type: null
+        content: null
+      switch item.constructor
+        when Object
+          msg.msg_type = "interactive"
+          msg.content = JSON.stringify item
+        else
+          msg.msg_type = "text"
+          msg.content = JSON.stringify text: (if reply then "<at user_id=\"#{envelope.user.id}\">#{envelope.user.name}</at>: #{item}" else item)
       @lark.messageSend msg
 
   run: ->
