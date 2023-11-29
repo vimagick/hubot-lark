@@ -9,7 +9,7 @@ _ = require "lodash"
 class ReactionMessage extends Message
   constructor: (type, user, reaction, rawMessage) ->
     super user
-    this.parent_id = rawMessage.message_id
+    this.parent_id = rawMessage.event.message_id
     this.type = type
     this.user = user
     this.reaction = reaction
@@ -17,8 +17,8 @@ class ReactionMessage extends Message
 
 class LarkTextMessage extends TextMessage
   constructor: (user, text, rawMessage) ->
-    super user, text, rawMessage.message_id
-    this.parent_id = rawMessage.parent_id
+    super user, text, rawMessage.event.message.message_id
+    this.parent_id = rawMessage.event.message.parent_id
     this.user = user
     this.text = text
     this.rawMessage = rawMessage
