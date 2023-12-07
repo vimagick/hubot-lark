@@ -13,15 +13,22 @@ class LarkApiClient
   constructor: (@appId, @appSecret) ->
     axios.defaults.baseURL = LARK_URL
     axios.defaults.headers.common['Content-Type'] = 'application/json'
+    @token = null
+    @token_expire_time = 0
 
   auth: ->
-    axios.post("auth/v3/tenant_access_token/internal", {
-      app_id: @appId,
-      app_secret: @appSecret
-    })
+    if @token_expire_time - Date.now() > 15*60*1000
+      return Promise.resolve @token
+    else
+      axios.post("auth/v3/tenant_access_token/internal", {
+        app_id: @appId,
+        app_secret: @appSecret
+      })
       .then (resp) =>
         token = resp.data.tenant_access_token
         if token?
+          @token = token
+          @token_expire_time = Date.now() + resp.data.expire*1000
           token
         else
           Promise.reject resp.data
